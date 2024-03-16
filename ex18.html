@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пример 18 - Календарь</title>
+  <style>
+    * {
+      font-family: 'Calibri';
+    }
+    .menu_link {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px;
+      text-decoration: none;
+      color: black;
+      background-color: #8dc5e6;
+      transition: 0.5s;
+    }
+    .menu_link:hover {
+      opacity: 0.8;
+    }
+    .alert {
+      padding: 5px 15px;
+      border-radius: 4px;
+      color: #2e6926;
+      background-color: #bedd8d;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .item {
+      background-color: #c8c8c8;
+      margin-bottom: 10px;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 10px;
+    }
+    .timer-progresbar {
+      display: flex;
+    }
+    .timer-progresbar > div {
+      padding: 5px;
+    }
+    .timer-progressbar__fill {
+      background-color: springgreen;
+    }
+    .timer-progressbar__empty {
+      background-color: tomato;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    table {
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      margin-right: 10px;
+    }
+    caption {
+      padding: 10px 0;
+      background-color: #fff6ce;
+      border: 1px solid black;
+      border-bottom: none;
+    }
+    td,
+    th {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+      font-size: 18px;
+    }
+    th {
+      font-weight: bold;
+      background-color: #fff6ce;
+    }
+    h4 {
+      text-transform: uppercase;
+    }
+    #clock {
+      font-size: 50px;
+      font-family: monospace;
+      font-weight: bold;
+    }
+
+    .btn {
+      font-size: 22px;
+      border: none;
+      background-color: #fff6ce;
+   
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+    }
+
+    .div_caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0px 20px;
+    }
+
+    .btn-left {
+      color: red;
+      background-color: #8dc5e6;
+    }
+
+    .btn-right {
+      color: #2e6926;
+      background-color: tomato;
+    }
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+
+  </div>
+
+  <script>
+    
+    function createCalendar(elem, year, month) {
+
+      const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+  
+
+
+      elem = document.querySelector(elem)
+  
+
+      let mon = month - 1;
+      let d = new Date(year, mon);
+
+
+      let table = `
+      
+      <table>
+        <caption>  
+          <div class="div_caption"><button class="btn" onclick="prevMonth()"><</button>
+          ${months[mon]} ${year}
+          <button class="btn" onclick="nextMonth()">></button> </div>
+        </caption>
+        <tr>
+          <th>пн</th>
+          <th>вт</th>
+          <th>ср</th>
+          <th>чт</th>
+          <th>пт</th>
+          <th>сб</th>
+          <th>вс</th>
+        </tr>
+        <tr>
+
+      `;
+
+
+
+        for(let i=0; i<getDay(d); i++) {
+          table += '<td></td>'
+        }
+
+
+         while(d.getMonth() == mon) {
+           table += '<td>' + d.getDate() + '</td>'
+          if(getDay(d) % 7 == 6) {
+            table += "</tr><tr>"
+          }
+          d.setDate(d.getDate() + 1)
+         }
+
+
+         if(getDay(d) != 0) {
+          for(let i=getDay(d); i<7; i++) {
+          table += '<td></td>'
+          }
+        }
+        
+
+      table += '</tr></table>';
+      elem.innerHTML = table;
+      
+        
+
+    }
+
+
+  
+
+    function getDay(data) {
+      let day = data.getDay()
+      if (day == 0) day = 7;
+      return day - 1;
+    }
+    let currentYear;
+    let currentMonth;
+
+    createCalendar('body', currentYear = 2024, currentMonth = 3)
+  
+
+    function nextMonth() {
+      // Добавить логику для отображения следующего месяца
+        currentMonth++;
+      if (currentMonth > 12) {
+        currentMonth = 1;
+        currentYear++;
+      }
+      createCalendar('body', currentYear, currentMonth);
+    }
+
+    nextMonth()
+
+
+    function prevMonth() {
+      // Добавить логику для отображения предыдущего месяца
+      currentMonth--;
+      if (currentMonth > 12) {
+        currentMonth -= 1;
+        currentYear--;
+      }
+      createCalendar('body', currentYear, currentMonth);
+    }
+
+
+    prevMonth()
+      
+  </script>
+</body>
+
+</html>
